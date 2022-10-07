@@ -38,6 +38,8 @@ def clean_numeric_columns(data_frame: pd.DataFrame) -> pd.DataFrame:
     This function allows to set all the garbage data as nan and then remove it 
     '''
 
+    data_frame.replace('????', np.nan, inplace=True)
+    data_frame.replace('jnkhbgvf 98uihj', np.nan, inplace=True)
     data_frame['Efficiency'].replace('fad', np.nan, inplace=True)
     data_frame['Efficiency'].replace('sf', np.nan, inplace=True)
     data_frame['Efficiency'] = data_frame['Efficiency'].astype('float')
@@ -45,7 +47,7 @@ def clean_numeric_columns(data_frame: pd.DataFrame) -> pd.DataFrame:
     data_frame['OG'].replace('twyey', np.nan, inplace=True)
     data_frame['OG'] = data_frame['OG'].astype('float')
 
-    data_frame['Size(L)'] = data_frame['Size(L)'].astype('float')
+    #data_frame['Size(L)'] = data_frame['Size(L)'].astype('float')
 
     data_frame['BoilGravity'].replace('afds', np.nan, inplace=True)
     data_frame['BoilGravity'].replace('dafsdgh', np.nan, inplace=True)
@@ -123,8 +125,7 @@ def drop_outliers(data_frame: pd.DataFrame) -> pd.DataFrame:
     '''
     types = data_frame.dtypes
     columns = [
-        column for column in data_frame.columns.values if types[column] is not 'category']
-
+        column for column in data_frame.columns.values if types[column] != 'category']
     # Only for numeric columns
     for column in columns:
         set_nan_for_numeric_outliers(column, data_frame)
