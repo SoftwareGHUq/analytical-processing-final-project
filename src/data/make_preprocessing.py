@@ -1,5 +1,42 @@
 import pandas as pd
 import numpy as np
+from sklearn.model_selection import train_test_split
+
+
+def save_x_and_y_data(input_filepath: str, output_filepath: str):
+    data = get_dataset(input_filepath)
+    process_data = process_data(data)
+    X = process_data.drop("Style", axis=1)
+    y = process_data["Style"]
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X,
+        y,
+        test_size=0.3,
+        random_state=123,
+        stratify=y
+    )
+
+    X_train.to_csv(f'{output_filepath}/x_train.csv', index=False)
+    y_train.to_csv(f'{output_filepath}/y_train.csv', index=False)
+    X_test.to_csv(f'{output_filepath}/x_test.csv', index=False)
+    y_test.to_csv(f'{output_filepath}/y_test.csv', index=False)
+
+    return X_train, X_test, y_train, y_test
+
+
+def get_dataset(input_filepath: str) -> pd.DataFrame:
+    return pd.read_parquet(f'{input_filepath}/data_complete.parquet')
+
+
+def process_data(data: pd.DataFrame) -> pd.DataFrame:
+    return (data
+            .pipe(drop_exact_duplicates)
+            .pipe(drop_gargbage_columns)
+            .pipe(drop_unuseful_columns)
+            .pipe(clean_numeric_columns)
+            .pipe(clean_categoric_columns)
+            .pipe(drop_outliers))
 
 
 def drop_exact_duplicates(data_frame: pd.DataFrame) -> pd.DataFrame:
