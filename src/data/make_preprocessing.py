@@ -17,16 +17,16 @@ def save_x_and_y_data(input_filepath: str, output_filepath: str):
         stratify=y
     )
 
-    X_train.to_csv(f'{output_filepath}/x_train.csv', index=False)
-    y_train.to_csv(f'{output_filepath}/y_train.csv', index=False)
-    X_test.to_csv(f'{output_filepath}/x_test.csv', index=False)
-    y_test.to_csv(f'{output_filepath}/y_test.csv', index=False)
+    X_train.to_parquet(f'{output_filepath}/x_train.parquet', index=False)
+    y_train.to_parquet(f'{output_filepath}/y_train.parquet', index=False)
+    X_test.to_parquet(f'{output_filepath}/x_test.parquet', index=False)
+    y_test.to_parquet(f'{output_filepath}/y_test.parquet', index=False)
 
     return X_train, X_test, y_train, y_test
 
 
 def get_dataset(input_filepath: str) -> pd.DataFrame:
-    return pd.read_parquet(f'{input_filepath}/data_complete.parquet')
+    return pd.read_csv(f'{input_filepath}/cervezaDS.csv')
 
 
 def process_data(data: pd.DataFrame) -> pd.DataFrame:
