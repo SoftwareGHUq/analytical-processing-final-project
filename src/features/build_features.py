@@ -18,8 +18,10 @@ def main(input_filepath, output_filepath):
     data_unbalanced = create_dummies_variables(data_unbalanced)
     data_unbalanced = encode_label(data_unbalanced)
 
-    resample_classes(data_unbalanced).to_parquet(
+    data_balanced = resample_classes(data_unbalanced)
+    data_balanced.to_parquet(
         f'{output_filepath}/beer_data_balanced.parquet')
+    logger.info(f'Data saved {len(data_balanced)}')
 
 
 def encode_label(data: pd.DataFrame) -> pd.DataFrame:
@@ -60,8 +62,7 @@ def resample_classes(data: pd.DataFrame) -> pd.DataFrame:
                                              stratify=df_minority_j,
                                              random_state=123)
             df_sampled = pd.concat([df_sampled, df_minority_upsampled])
-
-    return df_sampled
+    return pd.concat([data, df_sampled])
 
 
 if __name__ == '__main__':
