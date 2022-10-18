@@ -19,7 +19,7 @@ def main(input_filepath, output_filepath):
         f'{output_filepath}/beer_data_balanced.parquet')
 
 
-def resample_classes(data: pd.DataFrame) -> pd.DataTrain:
+def resample_classes(data: pd.DataFrame) -> pd.DataFrame:
     '''
     This function allows to resample the classes with less than 100 elements on it
     '''
