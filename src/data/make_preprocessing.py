@@ -1,28 +1,14 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
 
 
-def save_x_and_y_data(input_filepath: str, output_filepath: str):
+def process(input_filepath: str, output_filepath: str) -> pd.DataFrame:
     data = get_dataset(input_filepath)
     process_data = process_data(data)
-    X = process_data.drop("Style", axis=1)
-    y = process_data["Style"]
+    process_data.to_parquet(
+        f'{output_filepath}/beer_data_clean.parquet', index=False)
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X,
-        y,
-        test_size=0.3,
-        random_state=123,
-        stratify=y
-    )
-
-    X_train.to_parquet(f'{output_filepath}/x_train.parquet', index=False)
-    y_train.to_parquet(f'{output_filepath}/y_train.parquet', index=False)
-    X_test.to_parquet(f'{output_filepath}/x_test.parquet', index=False)
-    y_test.to_parquet(f'{output_filepath}/y_test.parquet', index=False)
-
-    return X_train, X_test, y_train, y_test
+    return process_data
 
 
 def get_dataset(input_filepath: str) -> pd.DataFrame:

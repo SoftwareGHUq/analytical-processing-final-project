@@ -1,7 +1,5 @@
 import pandas as pd
-from sklearn.naive_bayes import GaussianNB
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
 from joblib import dump
 import logging
 from pathlib import Path
@@ -14,14 +12,21 @@ def main(input_filepath, output_filepath):
     logger = logging.getLogger(__name__)
     logger.info('making a ML model from processed data')
 
-    x = pd.read_csv(f"{input_filepath}/x_train_model_input.csv")
-    y = pd.read_csv(f"{input_filepath}/y_train_model_input.csv")
+    data = pd.read_parquet(f"{input_filepath}/beer_data_balanced.parquet")
+    X, y = get_x_and_y(data)
 
-    # Model
-    #NB_pipeline = make_pipeline(StandardScaler(), GaussianNB())
-    #NB_pipeline.fit(x, y.values.ravel())
+    random_forest = RandomForestClassifier(n_estimators=100)
+    random_forest.fit(X, y.values.ravel())
 
-    #dump(NB_pipeline, f'{output_filepath}/NB_final_model.joblib')
+    dump(random_forest, f'{output_filepath}/random_forest_final_model.joblib')
+
+
+def get_x_and_y(data: pd.DataFrame):
+    label = {'Style'}
+    columns_set = set(data.columns.values)
+    X = data[list(columns_set-label)]
+    y = data[list(label)]
+    return X, y
 
 
 if __name__ == '__main__':

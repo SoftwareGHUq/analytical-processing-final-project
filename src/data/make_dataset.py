@@ -3,7 +3,7 @@ import click
 import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
-from data.make_preprocessing import save_x_and_y_data
+from data.make_preprocessing import process
 
 
 @click.command()
@@ -16,10 +16,8 @@ def main(input_filepath, output_filepath):
     logger = logging.getLogger(__name__)
     logger.info('making final data set from raw data')
 
-    X_train, X_test, y_train, y_test = save_x_and_y_data(
-        input_filepath, output_filepath)
-    logger.info(
-        f'Data set save and splitted:\nX train length:\n {len(X_train)}, \nX test length:\n {len(X_test)}, \ny train length:\n {len(y_train)}, \ny test length:\n {len(y_test)}')
+    data_clean = process(input_filepath, output_filepath)
+    logger.info(f'Dataset save: {len(data_clean)}')
 
 
 if __name__ == '__main__':
