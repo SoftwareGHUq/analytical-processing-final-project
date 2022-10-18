@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.utils import resample
 import logging
 from pathlib import Path
+from sklearn.preprocessing import LabelEncoder
 
 
 def main(input_filepath, output_filepath):
@@ -14,9 +15,29 @@ def main(input_filepath, output_filepath):
 
     data_unbalanced = pd.read_parquet(
         f'{input_filepath}/beer_data_clean.parquet')
+    data_unbalanced = create_dummies_variables(data_unbalanced)
+    data_unbalanced = encode_label(data_unbalanced)
 
     resample_classes(data_unbalanced).to_parquet(
         f'{output_filepath}/beer_data_balanced.parquet')
+
+
+def encode_label(data: pd.DataFrame) -> pd.DataFrame:
+    '''
+    This function allows to encode the label
+    '''
+    label_encoder = LabelEncoder()
+    data['Style'] = label_encoder.fit_transform(
+        data['Style'])
+    return data
+
+
+def create_dummies_variables(data: pd.DataFrame) -> pd.DataFrame:
+    '''
+    This function allows to create the dummies variables for the categoric columns
+    '''
+    categoric_keys = ['BrewMethod', 'SugarScale', 'Style']
+    return pd.get_dummies(data, columns=categoric_keys[:2])
 
 
 def resample_classes(data: pd.DataFrame) -> pd.DataFrame:
