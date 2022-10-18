@@ -28,15 +28,17 @@ def resample_classes(data: pd.DataFrame) -> pd.DataFrame:
     styles_unbalanced = [k for k, v in count_df.items() if v <= 100]
 
     df_sampled = pd.DataFrame()
+
     for j in styles_unbalanced:
 
         df_minority_j = data[data.Style == j]
-        df_minority_upsampled = resample(df_minority_j,
-                                         replace=True,
-                                         n_samples=400,
-                                         stratify=df_minority_j,
-                                         random_state=123)
-        df_sampled = pd.concat([df_sampled, df_minority_upsampled])
+        if df_minority_j.shape[0] != 0:
+            df_minority_upsampled = resample(df_minority_j,
+                                             replace=True,
+                                             n_samples=400,
+                                             stratify=df_minority_j,
+                                             random_state=123)
+            df_sampled = pd.concat([df_sampled, df_minority_upsampled])
 
     return df_sampled
 
@@ -46,5 +48,6 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format=log_fmt)
 
     project_dir = Path(__file__).resolve().parents[2]
-
-    main(f'{project_dir}/data/interim', f'{project_dir}/data/processed')
+    input_url = f'{project_dir}\data\interim'
+    output_url = f'{project_dir}\data\processed'
+    main(input_url, output_url)
