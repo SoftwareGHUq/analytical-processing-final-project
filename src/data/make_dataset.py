@@ -29,6 +29,4 @@ if __name__ == '__main__':
     # load_dotenv(find_dotenv())
     input_url = f'{project_dir}\data\\raw'
     output_url = f'{project_dir}\data\interim'
-    print(input_url)
-    print(output_url)
     main(input_url, output_url)
