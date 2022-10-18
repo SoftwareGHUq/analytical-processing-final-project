@@ -3,6 +3,7 @@ import click
 import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
+from data.make_preprocessing import process
 
 
 @click.command()
@@ -14,6 +15,9 @@ def main(input_filepath, output_filepath):
     """
     logger = logging.getLogger(__name__)
     logger.info('making final data set from raw data')
+
+    data_clean = process(input_filepath, output_filepath)
+    logger.info(f'Dataset save: {len(data_clean)}')
 
 
 if __name__ == '__main__':
@@ -27,4 +31,4 @@ if __name__ == '__main__':
     # load up the .env entries as environment variables
     load_dotenv(find_dotenv())
 
-    main()
+    main(f'{project_dir}/data/raw', f'{project_dir}/data/interim')
