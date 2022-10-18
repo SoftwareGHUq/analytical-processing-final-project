@@ -1,0 +1,2 @@
+---Accuracy in cross validation---
+ Mean: 0.7692249829497446 Standard deviation: 0.15140356625709864
