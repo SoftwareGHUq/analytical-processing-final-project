@@ -25,7 +25,7 @@ def main(input_filepath, output_filepath, report_filepath):
     k_fold = model_selection.KFold(n_splits=10)
     scoring = 'accuracy'
     score = (model_selection.cross_val_score(
-        model, X, y,  scoring=scoring, cv=k_fold))
+        model, X, y.values.ravel(),  scoring=scoring, cv=k_fold))
 
     print(f"({score.mean()}, {score.std()})")
 
@@ -49,6 +49,10 @@ if __name__ == '__main__':
     # not used in this stub but often useful for finding various files
     project_dir = Path(__file__).resolve().parents[2]
 
-    main(f'{project_dir}/data/processed',
-         f'{project_dir}/models',
-         f'{project_dir}/reports')
+    input_url = f'{project_dir}\data\processed'
+    output_url = f'{project_dir}\models'
+    reports_url = f'{project_dir}\\reports'
+
+    main(input_url,
+         output_url,
+         reports_url)

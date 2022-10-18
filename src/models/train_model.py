@@ -12,7 +12,7 @@ def main(input_filepath, output_filepath):
     logger = logging.getLogger(__name__)
     logger.info('making a ML model from processed data')
 
-    data = pd.read_parquet(f"{input_filepath}/beer_data_balanced.parquet")
+    data = pd.read_parquet(f"{input_filepath}/data_complete.parquet")
     X, y = get_x_and_y(data)
 
     random_forest = RandomForestClassifier(n_estimators=100)
@@ -39,5 +39,6 @@ if __name__ == '__main__':
     # find .env automagically by walking up directories until it's found, then
     # load up the .env entries as environment variables
     # load_dotenv(find_dotenv())
-
-    main(f'{project_dir}/data/processed', f'{project_dir}/models')
+    input_url = f'{project_dir}\data\processed'
+    output_url = f'{project_dir}\models'
+    main(input_url, output_url)
