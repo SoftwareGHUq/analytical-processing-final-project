@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
-import click
-import logging
-from pathlib import Path
+# libraries to import function from other folder
 from dotenv import find_dotenv, load_dotenv
-from data.make_preprocessing import process
+from pathlib import Path
+import logging
+import click
+from make_preprocessing import process
 
 
-@click.command()
-@click.argument('input_filepath', type=click.Path(exists=True))
-@click.argument('output_filepath', type=click.Path())
 def main(input_filepath, output_filepath):
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
@@ -26,9 +24,11 @@ if __name__ == '__main__':
 
     # not used in this stub but often useful for finding various files
     project_dir = Path(__file__).resolve().parents[2]
-
     # find .env automagically by walking up directories until it's found, then
     # load up the .env entries as environment variables
-    load_dotenv(find_dotenv())
-
-    main(f'{project_dir}/data/raw', f'{project_dir}/data/interim')
+    # load_dotenv(find_dotenv())
+    input_url = f'{project_dir}\data\\raw'
+    output_url = f'{project_dir}\data\interim'
+    print(input_url)
+    print(output_url)
+    main(input_url, output_url)

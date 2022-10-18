@@ -4,11 +4,11 @@ import numpy as np
 
 def process(input_filepath: str, output_filepath: str) -> pd.DataFrame:
     data = get_dataset(input_filepath)
-    process_data = process_data(data)
-    process_data.to_parquet(
+    data_processed = process_data(data)
+    data_processed.to_parquet(
         f'{output_filepath}/beer_data_clean.parquet', index=False)
 
-    return process_data
+    return data_processed
 
 
 def get_dataset(input_filepath: str) -> pd.DataFrame:
